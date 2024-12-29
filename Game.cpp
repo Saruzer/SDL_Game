@@ -1,7 +1,10 @@
 #include "Game.h"
+#include "TextureManager.h"
+#include "GameObject.h"
 
-SDL_Texture* playerTex;
-SDL_Rect srcR, destR;
+GameObject* Player;
+GameObject* Enemy;
+
 
 Game::Game()
 {
@@ -23,10 +26,8 @@ void Game::Init(const char* title, int x, int y, int width, int height, bool ful
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		isRunning = true;
 	}
-
-	SDL_Surface* tmpSurface = IMG_Load("Zombie.png");
-	playerTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
+	Player = new GameObject("Zombie.png",renderer,0,0);
+	Enemy = new GameObject("Pea.png", renderer, 500, 200);
 
 }
 
@@ -44,17 +45,17 @@ void Game::HandleEvents()
 int cnt = 0;
 void Game::Update()
 {
-	destR.w = 159;
-	destR.h = 256;
-	destR.x = cnt;
-	cnt++;
+	Player->Update();
+	Enemy->Update();
+
 }
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
 
-	SDL_RenderCopy(renderer, playerTex, 0, &destR);
+	Player->Render();
+	Enemy->Render();
 	SDL_RenderPresent(renderer);
 }
 
