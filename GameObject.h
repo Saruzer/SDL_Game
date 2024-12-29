@@ -10,7 +10,7 @@ private:
 	SDL_Rect srcRect, destRect;
 	SDL_Renderer* renderer;
 public:
-	GameObject(const char* textsheet,SDL_Renderer* ren, int x, int y);
+	GameObject(const char* textsheet, int x, int y);
 	~GameObject();
 
 	void Update();

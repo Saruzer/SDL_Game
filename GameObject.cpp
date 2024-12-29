@@ -1,10 +1,9 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
-GameObject::GameObject(const char* textsheet, SDL_Renderer* ren,int x,int y)
+GameObject::GameObject(const char* textsheet,int x,int y)
 {
-	renderer = ren;
-	objTexture = TextureManager::LoadTexture(textsheet, ren);
+	objTexture = TextureManager::LoadTexture(textsheet);
 	xpos = x;
 	ypos = y;
 }
@@ -18,19 +17,19 @@ void GameObject::Update()
 	xpos++;
 	ypos++;
 
-	srcRect.h = 2329;
-	srcRect.w = 1454;
+	srcRect.h = 32;
+	srcRect.w = 32;
 	srcRect.x = 0;
 	srcRect.y = 0;
 
 	destRect.x = xpos;
 	destRect.y = ypos;
-	destRect.w = srcRect.w / 9;
-	destRect.h = srcRect.h / 9;
+	destRect.w = srcRect.w * 2;
+	destRect.h = srcRect.h * 2;
 
 }
 
 void GameObject::Render()
 {
-	SDL_RenderCopy(renderer, objTexture, &srcRect, &destRect);
+	SDL_RenderCopy(Game::renderer, objTexture, &srcRect, &destRect);
 }
