@@ -3,11 +3,18 @@
 #include "GameObject.h"
 #include "Map.h"
 
+#include "ECS.h"
+#include "Components.h"
+
 GameObject* Player;
 GameObject* Enemy;
 Map* GameMap;
 
 SDL_Renderer* Game::renderer = nullptr;
+
+Manager GameManager;
+auto& newPlayer(GameManager.addEntity());
+
 
 Game::Game()
 {
@@ -32,6 +39,10 @@ void Game::Init(const char* title, int x, int y, int width, int height, bool ful
 	Player = new GameObject("Player.png",0,0);
 	Enemy = new GameObject("Enemy.png", 500, 200);
 	GameMap = new Map();
+
+	newPlayer.addComponent<PositionComponent>();
+	newPlayer.getComponent<PositionComponent>().SetPos(500, 500);
+
 }
 
 void Game::HandleEvents()
@@ -50,6 +61,7 @@ void Game::Update()
 {
 	Player->Update();
 	Enemy->Update();
+	GameManager.Update();
 	
 }
 
