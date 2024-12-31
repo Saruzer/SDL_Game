@@ -1,19 +1,14 @@
 #include "Game.h"
-#include "TextureManager.h"
-#include "GameObject.h"
+#include "TextureManager.h"	
 #include "Map.h"
-
-#include "ECS.h"
 #include "Components.h"
 
-GameObject* Player;
-GameObject* Enemy;
 Map* GameMap;
+Manager GameManager;
 
 SDL_Renderer* Game::renderer = nullptr;
 
-Manager GameManager;
-auto& newPlayer(GameManager.addEntity());
+auto& Player(GameManager.addEntity());
 
 
 Game::Game()
@@ -36,12 +31,10 @@ void Game::Init(const char* title, int x, int y, int width, int height, bool ful
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		isRunning = true;
 	}
-	Player = new GameObject("Player.png",0,0);
-	Enemy = new GameObject("Enemy.png", 500, 200);
+	Player.addComponent<PositionComponent>();
+	Player.addComponent<SpriteComponent>("Player.png");
 	GameMap = new Map();
 
-	newPlayer.addComponent<PositionComponent>();
-	newPlayer.getComponent<PositionComponent>().SetPos(500, 500);
 
 }
 
@@ -59,19 +52,20 @@ void Game::HandleEvents()
 int cnt = 0;
 void Game::Update()
 {
-	Player->Update();
-	Enemy->Update();
 	GameManager.Update();
-	
+	GameManager.Refresh();
+
+	if (Player.getComponent<PositionComponent>().GetX() > 100) {
+		Player.getComponent<SpriteComponent>().SetTexture("Enemy.png");
+	}
 }
 
 void Game::Render()
 {
 	SDL_RenderClear(renderer);
-
 	GameMap->DrawMap();
-	Player->Render();
-	Enemy->Render();
+	GameManager.Draw();
+
 	SDL_RenderPresent(renderer);
 }
 
