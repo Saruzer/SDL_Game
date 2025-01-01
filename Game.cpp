@@ -31,7 +31,7 @@ void Game::Init(const char* title, int x, int y, int width, int height, bool ful
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		isRunning = true;
 	}
-	Player.addComponent<PositionComponent>();
+	Player.addComponent<TransformComponent>();
 	Player.addComponent<SpriteComponent>("Player.png");
 	GameMap = new Map();
 
@@ -55,7 +55,7 @@ void Game::Update()
 	GameManager.Update();
 	GameManager.Refresh();
 
-	if (Player.getComponent<PositionComponent>().GetX() > 100) {
+	if (Player.getComponent<TransformComponent>().position.x > 100) {
 		Player.getComponent<SpriteComponent>().SetTexture("Enemy.png");
 	}
 }
