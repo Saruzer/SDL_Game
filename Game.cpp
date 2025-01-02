@@ -5,7 +5,7 @@
 
 Map* GameMap;
 Manager GameManager;
-
+SDL_Event Game::e;
 SDL_Renderer* Game::renderer = nullptr;
 
 auto& Player(GameManager.addEntity());
@@ -31,16 +31,20 @@ void Game::Init(const char* title, int x, int y, int width, int height, bool ful
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		isRunning = true;
 	}
+
+	GameMap = new Map();
+	
 	Player.addComponent<TransformComponent>();
 	Player.addComponent<SpriteComponent>("Player.png");
-	GameMap = new Map();
+	Player.addComponent<KeyboardController>();
 
 
 }
 
 void Game::HandleEvents()
 {
-	SDL_Event e;
+	
+
 	SDL_PollEvent(&e);
 	switch (e.type)
 	{
@@ -54,10 +58,6 @@ void Game::Update()
 {
 	GameManager.Update();
 	GameManager.Refresh();
-
-	if (Player.getComponent<TransformComponent>().position.x > 100) {
-		Player.getComponent<SpriteComponent>().SetTexture("Enemy.png");
-	}
 }
 
 void Game::Render()
