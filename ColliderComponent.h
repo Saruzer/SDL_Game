@@ -20,6 +20,8 @@ public:
 			entity->addComponent<TransformComponent>();
 		}
 		transform = &entity->getComponent<TransformComponent>();
+
+		Game::colliders.push_back(this);
 	}
 	void Update() override {
 		collider.x = static_cast<int>(transform->position.x);
